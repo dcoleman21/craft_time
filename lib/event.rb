@@ -49,4 +49,23 @@ class Event
       craft.supplies_required.keys.to_s.include?(item)
     end
   end
+
+  def assign_attendees_to_crafts
+    assignment = {}
+    @crafts.each do |craft|
+      assignment[craft] = [] if !assignment.has_key?(craft)
+    end
+    @attendees.each do |attendee|
+      sample = ""
+      until sample.class == Craft do
+        @crafts.each do |craft|
+          if attendee.interests.sample == craft.name
+            sample = craft
+          end
+        end
+      end
+      assignment[sample] << attendee
+    end
+    assignment
+  end
 end
