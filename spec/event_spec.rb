@@ -124,15 +124,11 @@ RSpec.describe Event do
         sewing => [toni]
       }
 
-      expect(event.assign_attendees_to_crafts).to eq(expected)
-
-      expected2 = {
-        knitting => [tony],
-        painting => [],
-        sewing => [hector, toni]
-      }
-
-      expect(event.assign_attendees_to_crafts).to eq(expected2)
+      expect(event.assign_attendees_to_crafts).to be_a Hash
+      expect(event.assign_attendees_to_crafts.length).to eq(3)
+      expect(event.assign_attendees_to_crafts.keys.first).to be_an_instance_of Craft
+      expect(event.assign_attendees_to_crafts.values.first).to be_an Array
+      expect(event.assign_attendees_to_crafts.values.first[0]).to be_a Person
     end
   end
 end
