@@ -30,4 +30,23 @@ class Event
     end
     list.uniq
   end
+
+  def attendees_by_craft_interest
+    by_craft_interest = {}
+    @crafts.each do |craft|
+      by_craft_interest[craft.name] = [] unless by_craft_interest.has_key?(craft.name)
+      @attendees.each do |attendee|
+        if attendee.interests.include?(craft.name)
+          by_craft_interest[craft.name] << attendee
+        end
+      end
+    end
+    by_craft_interest
+  end
+
+  def crafts_that_use(item)
+    @crafts.select do |craft|
+      craft.supplies_required.keys.to_s.include?(item)
+    end
+  end
 end
