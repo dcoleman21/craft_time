@@ -51,13 +51,21 @@ class Event
   end
 
   def assign_attendees_to_crafts
-    craft_assignments = {}
-    @attendees.each do |attendee|
-      @crafts.each do |craft|
-        craft_assignments[craft] ||= []
-        craft_assignments[craft] << attendee if attendee.can_build?(craft) && attendee.interests.include?(craft.name)
-      end
+    assignment = {}
+    @crafts.each do |craft|
+      assignment[craft] = [] if !assignment.has_key?(craft)
     end
-    craft_assignments
+    @attendees.each do |attendee|
+      sample = ""
+      until sample.class == Craft do
+        @crafts.each do |craft|
+          if attendee.interests.sample == craft.name
+            sample = craft
+          end
+        end
+      end
+      assignment[sample] << attendee
+    end
+    assignment
   end
 end
