@@ -85,4 +85,54 @@ RSpec.describe Event do
       expect(event.crafts_that_use('fire')).to eq([])
     end
   end
+
+  describe "Iteration 4" do 
+    it "can assign randomly choosen attendees to crafts" do 
+      hector = Person.new({name: 'Hector', interests: ['sewing', 'millinery', 'drawing', 'painting']})
+      toni = Person.new({name: 'Toni', interests: ['sewing', 'knitting']})
+      tony = Person.new({name: 'Tony', interests: ['drawing', 'knitting', 'painting']})
+      
+      knitting = Craft.new('knitting', {yarn: 20, scissors: 1, knitting_needles: 2})
+      sewing = Craft.new('sewing', {fabric: 5, scissors: 1, thread: 1})
+      painting = Craft.new('painting', {canvas: 1, paint_brush: 2, paints: 5})
+      
+      toni.add_supply('yarn', 30)
+      toni.add_supply('scissors', 2)
+      toni.add_supply('knitting_needles', 5)
+      toni.add_supply('fabric', 10)
+      toni.add_supply('scissors', 1)
+      toni.add_supply('thread', 2)
+      toni.add_supply('paint_brush', 10)
+      toni.add_supply('paints', 20)
+      
+      tony.add_supply('yarn', 20)
+      tony.add_supply('scissors', 2)
+      tony.add_supply('knitting_needles', 2)
+      
+      hector.add_supply('fabric', 5)
+      hector.add_supply('scissors', 1)
+      hector.add_supply('thread', 1)
+      hector.add_supply('canvas', 5)
+      hector.add_supply('paint_brush', 10)
+      hector.add_supply('paints', 20)
+      
+      event = Event.new("Carla's Craft Connection", [knitting, painting, sewing], [hector, toni, tony])
+      
+      expected = {
+        knitting => [tony],
+        painting => [hector],
+        sewing => [toni]
+      }
+
+      expect(event.assign_attendees_to_crafts).to eq(expected)
+
+      expected2 = {
+        knitting => [tony],
+        painting => [],
+        sewing => [hector, toni]
+      }
+
+      expect(event.assign_attendees_to_crafts).to eq(expected2)
+    end
+  end
 end
