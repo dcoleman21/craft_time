@@ -49,4 +49,15 @@ class Event
       craft.supplies_required.keys.to_s.include?(item)
     end
   end
+
+  def assign_attendees_to_crafts
+    craft_assignments = {}
+    @attendees.each do |attendee|
+      @crafts.each do |craft|
+        craft_assignments[craft] ||= []
+        craft_assignments[craft] << attendee if attendee.can_build?(craft) && attendee.interests.include?(craft.name)
+      end
+    end
+    craft_assignments
+  end
 end
